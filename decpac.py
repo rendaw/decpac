@@ -62,31 +62,21 @@ def main():
             conf = luxem.load(conff)[0]
         print('Scanning current package state...')
         state = dict(
-            installed=[],
+            installed=set(itercurrent()),
         )
-        for package in itercurrent():
-            state['installed'].append(package)
-        add = []
-        for new in conf['installed']:
-            if new in state['installed']:
-                continue
-            add.append(new)
-        remove = []
-        for old in state['installed']:
-            if old in conf['installed']:
-                continue
-            remove.append(old)
+        add = conf['installed'] - state['installed']
         print('Installing {}'.format(add))
+        remove = state['installed'] - conf['installed']
         print('Removing {}'.format(remove))
         if not input('Okay? (y/N) ') == 'y':
             print('Aborting.')
             return
         if add:
-            check_call(conf['command'] + add)
+            check_call(conf['command'] + list(add))
         else:
             print('No packages to install.')
         if remove:
-            check_call(['sudo', 'pacman', '-Rs', '--noconfirm'] + remove)
+            check_call(['sudo', 'pacman', '-Rs', '--noconfirm'] + list(remove))
         else:
             print('No packages to remove.')
         print('Done')

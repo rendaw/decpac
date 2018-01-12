@@ -23,7 +23,9 @@ If you don't have a configuration file, create one with
 sudo decpac generate
 ```
 
-Edit your `/etc/decpac.conf` (be careful not to delete system files). Then run
+Edit your `/etc/decpac.conf` (be careful not to delete system files).  This is a [luxem](https://github.com/rendaw/luxem) file, which is like JSON but quotes are optional for single words and you can add comments like `* this is a comment *`.
+
+Then run
 ```
 sudo decpac
 ```
