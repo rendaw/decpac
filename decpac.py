@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import argparse
-import json
 import shlex
 from subprocess import check_call, check_output
 import re
 import luxem
+import os.path
+from tempfile import NamedTemporaryFile
 
 
 def main():
@@ -22,7 +23,7 @@ def main():
     com_gen.add_argument(
         '-c', '--command',
         help='Install command',
-        default='pacman --noconfirm -S',
+        default='sudo pacman --noconfirm -S',
     )
     com_gen.add_argument(
         '-f', '--force',
@@ -50,8 +51,12 @@ def main():
             command=shlex.split(args.command),
             installed=list(itercurrent()),
         )
-        with open(args.conf, 'w' if args.force else 'x') as out:
-            luxem.dump(out, conf, pretty=True)
+        if not args.force and os.path.exists(args.conf):
+            print('decpac.conf already exists. Delete it or run with `-f`.')
+            return
+        with NamedTemporaryFile() as tmp:
+            tmp.write(luxem.dumps(conf, pretty=True))
+            check_call(['sudo', 'cp', tmp.name, args.conf])
     elif command == 'sync':
         with open(args.conf, 'r') as conff:
             conf = luxem.load(conff)[0]
@@ -73,17 +78,15 @@ def main():
             remove.append(old)
         print('Installing {}'.format(add))
         print('Removing {}'.format(remove))
-        if not input('Okay? y/N') == 'y':
+        if not input('Okay? (y/N) ') == 'y':
             print('Aborting.')
             return
         if add:
-            # check_call(conf['command'] + add)
-            pass
+            check_call(conf['command'] + add)
         else:
             print('No packages to install.')
         if remove:
-            # check_call(['pacman', '-Rs', '--noconfirm'] + remove)
-            pass
+            check_call(['sudo', 'pacman', '-Rs', '--noconfirm'] + remove)
         else:
             print('No packages to remove.')
-        state['installed'] = conf['installed']
+        print('Done')

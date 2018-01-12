@@ -9,6 +9,7 @@ List the packages you want installed in `/etc/decpac.conf`.  Run `decpac` and pa
 2. You're looking for a program that does X, and there are 10 programs that say they do X.  If you install them all, you'll definitely forget to uninstall them.  Write a note in `decpac.conf`!
 3. You're trying to clean up your system but you don't remember why you installed a package, or even what it does.  Organize and annotate your `decpac.conf` with comments!
 4. Help me out here.
+5. Diff your config files!
 
 # Usage
 
@@ -22,7 +23,7 @@ If you don't have a configuration file, create one with
 sudo decpac generate
 ```
 
-Edit your `/etc/decpac.conf` file then run
+Edit your `/etc/decpac.conf` (be careful not to delete system files). Then run
 ```
 sudo decpac
 ```
