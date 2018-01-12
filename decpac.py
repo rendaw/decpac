@@ -7,19 +7,11 @@ import re
 import luxem
 
 
-# NOTE Scanning with pacman -Qe was slow at first but sped up so I think the
-# state cache is unnecessary.  Commented out for now.
-
-
 def main():
-    version = '0000.0000.0000'
-
     parser = argparse.ArgumentParser(
         description='Arch Linux declarative package management')
     parser.add_argument(
         '--conf', help='Configuration path', default='/etc/decpac.conf')
-    # parser.add_argument(
-    #     '--state', help='State path', default='/var/cache/decpac.cache')
 
     subparsers = parser.add_subparsers(title='Command', dest='_command')
 
@@ -38,17 +30,10 @@ def main():
         action='store_true',
     )
 
-    # com_sync = subparsers.add_parser(
     subparsers.add_parser(
         'sync',
         description='Install, remove, and upgrade packages. Default command.',
     )
-    # com_sync.add_argument(
-    #     '-r',
-    #     '--rescan',
-    #     help='Ignore state cache and check what files are actually installed.',
-    #     action='store_true',
-    # )
 
     args = parser.parse_args()
 
@@ -70,41 +55,35 @@ def main():
     elif command == 'sync':
         with open(args.conf, 'r') as conff:
             conf = luxem.load(conff)[0]
-        state = None
-        # if not getattr(args, 'rescan', False):
-        #     try:
-        #         with open(args.state, 'r') as statef:
-        #             state = json.loads(statef.read())
-        #     except FileNotFoundError as e:
-        #         pass
-        if not state:
-            print('Scanning current package state...')
-            state = dict(
-                version=version,
-                installed=[],
-            )
-            for package in itercurrent():
-                state['installed'].append(package)
+        print('Scanning current package state...')
+        state = dict(
+            installed=[],
+        )
+        for package in itercurrent():
+            state['installed'].append(package)
         add = []
         for new in conf['installed']:
             if new in state['installed']:
                 continue
             add.append(new)
-        if add:
-            print('Installing {}'.format(add))
-            # check_call(conf['command'] + add)
-        else:
-            print('No packages to install.')
         remove = []
         for old in state['installed']:
             if old in conf['installed']:
                 continue
             remove.append(old)
+        print('Installing {}'.format(add))
+        print('Removing {}'.format(remove))
+        if not input('Okay? y/N') == 'y':
+            print('Aborting.')
+            return
+        if add:
+            # check_call(conf['command'] + add)
+            pass
+        else:
+            print('No packages to install.')
         if remove:
-            print('Removing {}'.format(remove))
             # check_call(['pacman', '-Rs', '--noconfirm'] + remove)
+            pass
         else:
             print('No packages to remove.')
         state['installed'] = conf['installed']
-        # with open(args.state, 'w') as out:
-        #     json.dump(state, out, indent=4)
