@@ -28,7 +28,7 @@ subprocess.check_call(['git', 'push'])
 subprocess.check_call(['git', 'push', '--tags'])
 subprocess.check_call(['python', 'setup.py', 'sdist'])
 dist = 'dist/{}-{}.tar.gz'.format(
-    re.search('^READ_name = (.*)$', oldsetup, flags=re.M).group(1),
+    re.search('^READ_name = \'(.*)\'$', oldsetup, flags=re.M).group(1),
     args.version
 )
 subprocess.check_call(['twine', 'upload', dist, '--user', 'rendaw'])
