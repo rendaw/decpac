@@ -8,7 +8,7 @@ I've been using it for a couple months now (April 2018).
 ##### Why declarative management?
 
 1. You want to install the same packages on a different system.  Just copy `decpac.conf` over and run `decpac`!
-2. You're looking for a program that does X, and there are 10 programs that say they do X.  If you install them all, you'll definitely forget to uninstall them.  Write a note in `decpac.conf`!
+2. You're looking for a program that does X, and there are 10 programs that say they do X.  If you install them all, you'll definitely forget to uninstall them.  Install them using pacman directly and decpac will uninstall them the next time you run it.
 3. You're trying to clean up your system but you don't remember why you installed a package, or even what it does.  Organize and annotate your `decpac.conf` with comments!
 4. Help me out here.
 5. Diff your config files!
@@ -75,4 +75,6 @@ Most AUR helpers had issues, such as installing all deps from AUR or not flaggin
 
 Customizing AUR builds makes things nonreproducible so I avoid doing that.  Specifying customizations in `decpac.conf` might be a good feature.
 
-It would be awesome to be able to install Ruby/Node packages as well using `npm2arch` and its ilk.
+It would be awesome if decpac could install Ruby/Node packages as well using `npm2arch` and its ilk.
+
+Renamed packages need to be renamed in the config manually.  decpac could update the config file automatically but de/reserializing deletes comments.  Maybe making a `(comment)` type would work?

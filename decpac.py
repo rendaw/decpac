@@ -59,6 +59,7 @@ def main():
     command = args._command
     if not command:
         command = 'sync'
+
     if command == 'generate':
         local = set(iterlocal())
         conf = dict(
@@ -78,6 +79,7 @@ def main():
         with NamedTemporaryFile() as tmp:
             tmp.write(luxem.dumps(conf, pretty=True))
             check_call(['sudo', 'cp', tmp.name, args.conf])
+
     elif command == 'sync':
         def pname(package):
             if isinstance(package, luxem.Typed):
@@ -121,7 +123,7 @@ def main():
             return
         print()
 
-        # Add new packages or remark mis-marked packages
+        # Add new packages or re-mark mis-marked packages
         if add:
             mark = []
             for command, command_default, type_add in [
@@ -165,7 +167,7 @@ def main():
         if remove:
             check_call(
                 [
-                    'sudo', 'pacman', '-D', '--asdeps', '--noconfir'
+                    'sudo', 'pacman', '-D', '--asdeps', '--noconfirm'
                 ] + list(remove))
             check_call(
                 ['sudo', 'pacman', '-Rsu', '--noconfirm'] + list(remove))
