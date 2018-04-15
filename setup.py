@@ -1,11 +1,15 @@
 from setuptools import setup
 
+GEN_version = '0.0.1'
+READ_name = 'decpac'
+
 setup(
-    name='decpac',
-    version='0.0.1',
+    name=READ_name,
+    version=GEN_version,
     author='rendaw',
     url='https://github.com/rendaw/decpac',
-    download_url='https://github.com/rendaw/decpac/tarball/v0.0.1',
+    download_url='https://github.com/rendaw/decpac/tarball/v{}'.format(
+        GEN_version),
     license='MIT',
     description='Arch Linux declarative package management',
     long_description=open('readme.md', 'r').read(),
