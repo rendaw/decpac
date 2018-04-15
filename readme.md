@@ -3,6 +3,8 @@
 
 List the packages you want installed in `/etc/decpac.conf`.  Run `decpac` and packages will be installed/uninstalled until the set of installed packages matches the list.  This doesn't manage config files, cache files, other generated files, etc.  If you like this but want more rigorous declarative package management check out [Nix](https://nixos.org/nix/) and [NixOS](https://nixos.org/).
 
+I've been using it for a couple months now (April 2018).
+
 ##### Why declarative management?
 
 1. You want to install the same packages on a different system.  Just copy `decpac.conf` over and run `decpac`!
@@ -23,10 +25,54 @@ If you don't have a configuration file, create one with
 sudo decpac generate
 ```
 
-Edit your `/etc/decpac.conf` (be careful not to delete system files).  This is a [luxem](https://github.com/rendaw/luxem) file, which is like JSON but quotes are optional for single words and you can add comments like `* this is a comment *`.
+Edit your `/etc/decpac.conf` (be careful not to delete system files) (see **Config file syntax** below).
 
 Then run
 ```
 sudo decpac
 ```
 to synchronize your packages.
+
+# Config file syntax
+
+The config file looks like:
+
+```
+{
+        install_main: [
+                sudo,
+                pacman,
+                --noconfirm,
+                -S,
+        ],
+        install_aur: [
+                trizen,
+                --noconfirm,
+                -S,
+        ],
+        installed: [
+                nvidia,
+                lib32-nvidia-utils,
+                trizen,
+		...
+
+                * audio *
+                alsa-utils,
+                (aur) alsaequal,
+                alsaequal-mgr,
+                alsaplayer,
+		...
+	],
+},
+```
+This is a [luxem](https://github.com/rendaw/luxem) file, which is like JSON but quotes are optional for single words and you can add comments like `* this is a comment *`.
+
+`(aur)` specifies an AUR package.  It's installed with whatever helper you specified in `install_aur` (trizen worked for me).
+
+# Implementation notes
+
+Most AUR helpers had issues, such as installing all deps from AUR or not flagging dependencies as dependencies (or rather, flagging them all as explicit).  I worked around that somewhat but it would be nice to implement AUR functionality directly.  It may make things more efficient too.
+
+Customizing AUR builds makes things nonreproducible so I avoid doing that.  Specifying customizations in `decpac.conf` might be a good feature.
+
+It would be awesome to be able to install Ruby/Node packages as well using `npm2arch` and its ilk.
