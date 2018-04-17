@@ -53,7 +53,7 @@ def main():
 
     def iterlocal():
         for line in check_output(
-                ['packman', '-Qm']).decode('utf-8').splitlines():
+                ['pacman', '-Qm']).decode('utf-8').splitlines():
             yield re.search('([^ ]+)', line).group(1)
 
     command = args._command
