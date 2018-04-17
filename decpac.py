@@ -79,6 +79,7 @@ def main():
         with NamedTemporaryFile() as tmp:
             tmp.write(luxem.dumps(conf, pretty=True))
             check_call(['sudo', 'cp', tmp.name, args.conf])
+            check_call(['sudo', 'chmod', '644', args.conf])
 
     elif command == 'sync':
         def pname(package):
