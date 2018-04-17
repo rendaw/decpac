@@ -11,7 +11,7 @@ I've been using it for a couple months now (April 2018).
 2. You're looking for a program that does X, and there are 10 programs that say they do X.  If you install them all, you'll definitely forget to uninstall them.  Install them using pacman directly and decpac will uninstall them the next time you run it.
 3. You're trying to clean up your system but you don't remember why you installed a package, or even what it does.  Organize and annotate your `decpac.conf` with comments!
 4. Help me out here.
-5. Diff your config files!
+5. Diff your package list!
 
 # Usage
 
@@ -29,7 +29,7 @@ Edit your `/etc/decpac.conf` (be careful not to delete system files) (see **Conf
 
 Then run
 ```
-sudo decpac
+decpac
 ```
 to synchronize your packages.
 
@@ -78,3 +78,8 @@ Customizing AUR builds makes things nonreproducible so I avoid doing that.  Spec
 It would be awesome if decpac could install Ruby/Node packages as well using `npm2arch` and its ilk.
 
 Renamed packages need to be renamed in the config manually.  decpac could update the config file automatically but de/reserializing deletes comments.  Maybe making a `(comment)` type would work?
+
+# Related projects
+
+* [Nix](https://nixos.org/nix/) - A strict declarative package (and config) manager that can be used on Arch, and also the basis of Linux distro [NixOS](https://nixos.org/)
+* [aconfmgr](https://github.com/CyberShadow/aconfmgr) - A declarative Arch-native package and config manager
