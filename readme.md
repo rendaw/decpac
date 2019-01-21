@@ -65,7 +65,7 @@ The config file looks like:
 	],
 },
 ```
-This is a [luxem](https://github.com/rendaw/luxem) file, which is like JSON but quotes are optional for single words and you can add comments like `* this is a comment *`.
+This is a [luxem](https://gitlab.com/rendaw/luxem) file, which is like JSON but quotes are optional for single words and you can add comments like `* this is a comment *`.
 
 `(aur)` specifies an AUR package.  It's installed with whatever helper you specified in `install_aur` (trizen worked for me).
 
