@@ -1,6 +1,6 @@
 from setuptools import setup
 
-GEN_version = '0.0.6'
+GEN_version = '0.0.7'
 READ_name = 'decpac'
 
 setup(
